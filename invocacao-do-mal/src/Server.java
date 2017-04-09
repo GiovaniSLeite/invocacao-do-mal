@@ -3,7 +3,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 
-public class Servidor implements PartRepository {
+public class Server implements PartRepository {
     PartRepository repo;
 
     @Override
