@@ -4,7 +4,7 @@ import java.util.List;
 
 
 public class Repository implements PartRepository {
-    
+    String name;
     List<Part> parts;
 
     @Override
@@ -20,6 +20,11 @@ public class Repository implements PartRepository {
     @Override
     public void insertPart(Part newOne) throws RemoteException {
         parts.add(newOne);
+    }
+
+    @Override
+    public String getName() throws RemoteException {
+        return name;
     }
     
 }

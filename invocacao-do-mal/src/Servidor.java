@@ -20,4 +20,9 @@ public class Servidor implements PartRepository {
     public void insertPart(Part newOne) throws RemoteException {
         repo.insertPart(newOne);
     }
+
+    @Override
+    public String getName() throws RemoteException {
+        return repo.getName();
+    }
 }

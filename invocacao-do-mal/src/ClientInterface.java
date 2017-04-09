@@ -9,13 +9,13 @@ public interface ClientInterface {
     String getCurrentRepoName();
     Integer getCurrentReposize();
     String listCurrentRepoParts(); /*listp*/
-    Part getPart(Integer code); /*getp*/
-    void addPartToRepository(Part p); /*addp*/
+    void getPart(Integer code); /*getp*/
+    void addPartToRepository(String name, String description); /*addp*/
     String getCurrentPartName(); /*showp*/
     String getCurrentPartDescription(); /*showp*/
     Integer countCurrentPartDirectComponents(); /*showp*/
     String listCurrentPartSubComponents(); /*showp*/
-    void addPartToCurrentSubComponents(Part p); /*addsubpart*/
+    void addPartToCurrentSubComponents(Integer quantity); /*addsubpart*/
     void clearCurrentSubComponents(); /*clearlist*/
     void quit(); /*quit*/
 }
