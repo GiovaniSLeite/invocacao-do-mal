@@ -1,3 +1,2 @@
-*
-!*.java
-!*.md
+invocacao-do-mal/*
+!invocacao-do-mal/src
