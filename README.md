@@ -9,3 +9,29 @@ http://www.linhadecodigo.com.br/artigo/2831/exemplo-pratico-do-uso-de-rmi-em-sis
 
 UUID - Ids únicos
 http://www.javapractices.com/topic/TopicAction.do?Id=56
+
+--------------------------------------------------------------------------------------
+
+Como executar (Isso só funciona com as coisas setadas na mão):
+
+## Colocar as classes em uma pasta, compilar tudo.
+javac *.java
+
+## Começar o registro no diretorio que tiver as classes tudo
+start rmiregistry
+
+## Startar o Servidor
+java -Djava.security.policy=server.policy Repository
+
+## Startar o cliente
+java -Djava.security.policy=server.policy Client
+
+-------------------------------------------------------------------------------------
+
+O que falta fazer:
+
+- Remover tudo que foi hardcoded, tipo o nome do servidor.
+
+- Fazer o meu no client
+
+- Adaptar as funções que foram feitas no Client para tratarem as entradas e responderem aos comandos (tirar os returns e colocar prints, além do Scanner e etc)
