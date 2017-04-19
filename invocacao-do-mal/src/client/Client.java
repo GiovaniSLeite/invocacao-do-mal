@@ -1,4 +1,10 @@
+package client;
 
+
+import utils.Part;
+import utils.PartRepository;
+import utils.SubcomponentsList;
+import utils.SubcomponentsListItem;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -14,7 +20,6 @@ public class Client {
         Client x = new Client();
         System.out.println("escreve o nome do repositorio");
         Scanner sc = new Scanner(System.in);
-        
         x.connectTo(sc.next());
         x.addPartToRepository("Amanda", "besta");
         System.out.println(x.currentRepo.getRepositorySize());

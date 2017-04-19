@@ -1,4 +1,7 @@
+package server;
 
+
+import utils.*;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -8,7 +11,6 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class Repository implements PartRepository {
-
     private String name;
     private HashMap<UUID, Part> partCollection;
 
@@ -28,6 +30,7 @@ public class Repository implements PartRepository {
                 registry.bind(name, stub);
             } catch (AlreadyBoundException e) {
                 System.out.println("Já existe um repositório com o mesmo nome");
+                System.exit(0);
             }
             System.err.println("Servidor pronto");
         } catch (Exception e) {
@@ -75,7 +78,7 @@ public class Repository implements PartRepository {
     @Override
     public String listRepositoryParts() throws RemoteException {
         StringBuilder list = new StringBuilder();
-        list.append("Peças do repositorio ").append(this.getName()).append("\n");
+        list.append("Peças do repositorio: ").append(this.getName()).append("\n");
         
         for(Part p : partCollection.values())
             list.append(p.toText()).append("\n");

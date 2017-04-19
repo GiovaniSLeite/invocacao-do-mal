@@ -1,6 +1,9 @@
+package utils;
 
 
 
+
+import utils.SubcomponentsListItem;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;

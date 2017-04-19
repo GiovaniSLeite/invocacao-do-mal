@@ -1,4 +1,5 @@
-
+package server;
+import utils.*;
 import java.rmi.RemoteException;
 import java.util.UUID;
 
@@ -64,6 +65,4 @@ public class PartObject implements Part {
     public String toText() throws RemoteException {
         return this.toString();
     }
-    
-    
 }
