@@ -1,12 +1,15 @@
 
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class SubcomponentsList {
+public class SubcomponentsList implements Serializable {
     Collection<SubcomponentsListItem> list;
-
+    private static final long serialVersionUID = 2806421523585360625L;
+    
+    
     public SubcomponentsList() {
         list = new ArrayList();
     }

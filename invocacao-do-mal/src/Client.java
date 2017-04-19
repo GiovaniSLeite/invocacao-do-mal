@@ -1,22 +1,33 @@
 
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.UUID;
 
 public class Client {
     PartRepository currentRepo;
     Part currentPart;
-    SubcomponentsList currentSubcomponents = new SubcomponentsList();
+    Collection<Part> currentSubcomponents;
     
      public static void main(String[] args) {
-        //TODO - Menu
+    	 Client c = new Client();
+    	 c.connectTo("repo"); //TODO - Menu
     }
 
+     public Client() {
+    	 currentSubcomponents = new ArrayList<Part>();
+	}
+     
     public void connectTo(String serverName) {
         try {
-            Registry registry = LocateRegistry.getRegistry(1200);
+            Registry registry = LocateRegistry.getRegistry(1099);
             currentRepo = (PartRepository) registry.lookup(serverName);
+            currentRepo.teste();
+            addPartToRepository("PQP", "123");
+            System.out.println(getCurrentRepoSize());
         } catch (Exception ex) {
             System.out.println("Erro ao conectar ao servidor - " + ex.getMessage());
         }
@@ -89,7 +100,7 @@ public class Client {
     }
 
     public void addPartToCurrentSubComponents(Integer quantity) {
-        currentSubcomponents.add(new SubcomponentsListItem(currentPart, quantity));
+        currentSubcomponents.add(null);
     }
 
     public void clearCurrentSubComponents() {

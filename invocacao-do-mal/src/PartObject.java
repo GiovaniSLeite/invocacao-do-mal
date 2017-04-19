@@ -1,13 +1,14 @@
 
 import java.rmi.RemoteException;
+import java.util.Collection;
 import java.util.UUID;
 
 public class PartObject implements Part {
     UUID code;
     String name, description, origin;
-    SubcomponentsList subcomponents;
+    Collection subcomponents;
 
-    public PartObject(String name, String description, String origin, SubcomponentsList subs) {
+    public PartObject(String name, String description, String origin, Collection<Part> subs) {
         this.code = UUID.randomUUID();
         this.name = name;
         this.description = description;
