@@ -9,21 +9,29 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class Client {
     PartRepository currentRepo;
     Part currentPart;
     SubcomponentsList currentSubcomponents;
     
-     public static void main(String[] args) throws RemoteException {
+    public static void main(String[] args) throws RemoteException {
         Client x = new Client();
+    }
+
+    void teste() throws RemoteException {
         System.out.println("escreve o nome do repositorio");
         Scanner sc = new Scanner(System.in);
-        x.connectTo(sc.next());
-        x.addPartToRepository("Amanda", "besta");
-        System.out.println(x.currentRepo.getRepositorySize());
-        System.out.println(x.listCurrentRepoParts());
+        this.connectTo(sc.next());
+        System.out.println(this.currentRepo.getRepositorySize());
+        this.addPartToRepository("Amanda", "besta");
+        System.out.println(this.currentRepo.getRepositorySize());
+        System.out.println(this.listCurrentRepoParts());
+        System.out.println(this.getCurrentRepoName());
+        System.out.println(this.getCurrentRepoSize());
+        System.out.println("escreve o cod");
+        this.getPart(sc.next());
+        System.out.println(currentPart.getDescription());
     }
 
     public Client() {
@@ -58,7 +66,7 @@ public class Client {
         }
     }
 
-    public void getPart(UUID code) {
+    public void getPart(String code) {
         try {
             currentPart = currentRepo.getPart(code);
         } catch (RemoteException ex) {

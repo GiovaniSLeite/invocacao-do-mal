@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class Repository implements PartRepository {
     private String name;
-    private HashMap<UUID, Part> partCollection;
+    private HashMap<String, Part> partCollection;
 
     public static void main(String[] args) {
         String name = args.length > 0 ? args[0] : "remote";
@@ -53,7 +53,7 @@ public class Repository implements PartRepository {
     }
 
     @Override
-    public Part getPart(UUID code) throws RemoteException {
+    public Part getPart(String code) throws RemoteException {
         return partCollection.get(code);
     }
 
@@ -64,7 +64,7 @@ public class Repository implements PartRepository {
             Part stub = (Part) UnicastRemoteObject.exportObject(p, 0);
             Registry registry = LocateRegistry.getRegistry(1099);
             registry.bind(p.getCode().toString(), stub);
-            partCollection.put(p.getCode(), stub);
+            partCollection.put(p.getCode().toString(), stub);
         } catch (Exception ex) {
             System.out.println("Erro durante a inserção - " + ex.getMessage());
         }
