@@ -1,10 +1,11 @@
 
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class SubcomponentsList {
+public class SubcomponentsList implements Serializable{
     Collection<SubcomponentsListItem> list;
 
     public SubcomponentsList() {

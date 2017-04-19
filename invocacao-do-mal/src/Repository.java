@@ -1,4 +1,5 @@
 
+import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -12,23 +13,30 @@ public class Repository implements PartRepository {
     private HashMap<UUID, Part> partCollection;
 
     public static void main(String[] args) {
-        
-    	if (System.getSecurityManager() == null) {
-               System.setSecurityManager(new SecurityManager());
-           }
-
+        String name = args.length > 0 ? args[0] : "remote";
         try {
             PartRepository obj = new Repository();
-            obj.setName("repo");
+            Registry registry;
+            try {
+                registry = LocateRegistry.createRegistry(1099);
+            } catch (Exception e) {
+                registry = LocateRegistry.getRegistry(1099);
+            }
+            obj.setName(name);
             PartRepository stub = (PartRepository) UnicastRemoteObject.exportObject(obj, 0);
-
-            Registry registry = LocateRegistry.createRegistry(1200);
-            registry.rebind("repo", stub);
-
+            try {
+                registry.bind(name, stub);
+            } catch (AlreadyBoundException e) {
+                System.out.println("Já existe um repositório com o mesmo nome");
+            }
             System.err.println("Servidor pronto");
         } catch (Exception e) {
             System.err.println("Server exception: " + e.toString());
         }
+    }
+
+    public Repository() {
+        partCollection = new HashMap<>();
     }
 
     @Override
@@ -51,10 +59,8 @@ public class Repository implements PartRepository {
         try {
             PartObject p = new PartObject(name, description, this.name, subs);
             Part stub = (Part) UnicastRemoteObject.exportObject(p, 0);
-
-            Registry registry = LocateRegistry.getRegistry();
+            Registry registry = LocateRegistry.getRegistry(1099);
             registry.bind(p.getCode().toString(), stub);
-
             partCollection.put(p.getCode(), stub);
         } catch (Exception ex) {
             System.out.println("Erro durante a inserção - " + ex.getMessage());
@@ -69,10 +75,10 @@ public class Repository implements PartRepository {
     @Override
     public String listRepositoryParts() throws RemoteException {
         StringBuilder list = new StringBuilder();
-        list.append("Peças do repositorio ").append(this.getName());
+        list.append("Peças do repositorio ").append(this.getName()).append("\n");
         
         for(Part p : partCollection.values())
-            list.append(p).append("\n");
+            list.append(p.toText()).append("\n");
         
         list.append("--- fim da lista ---");
         

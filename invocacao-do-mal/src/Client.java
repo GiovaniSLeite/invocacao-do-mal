@@ -2,21 +2,34 @@
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Scanner;
 import java.util.UUID;
 
 public class Client {
     PartRepository currentRepo;
     Part currentPart;
-    SubcomponentsList currentSubcomponents = new SubcomponentsList();
+    SubcomponentsList currentSubcomponents;
     
-     public static void main(String[] args) {
-        //TODO - Menu
+     public static void main(String[] args) throws RemoteException {
+        Client x = new Client();
+        System.out.println("escreve o nome do repositorio");
+        Scanner sc = new Scanner(System.in);
+        
+        x.connectTo(sc.next());
+        x.addPartToRepository("Amanda", "besta");
+        System.out.println(x.currentRepo.getRepositorySize());
+        System.out.println(x.listCurrentRepoParts());
+    }
+
+    public Client() {
+        currentSubcomponents = new SubcomponentsList();
     }
 
     public void connectTo(String serverName) {
         try {
-            Registry registry = LocateRegistry.getRegistry(1200);
-            currentRepo = (PartRepository) registry.lookup(serverName);
+            Registry registry = LocateRegistry.getRegistry(1099);
+            currentRepo = (PartRepository) registry.lookup(serverName);            
+            System.out.println("Conectado");
         } catch (Exception ex) {
             System.out.println("Erro ao conectar ao servidor - " + ex.getMessage());
         }

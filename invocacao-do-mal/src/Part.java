@@ -15,4 +15,5 @@ public interface Part extends Remote {
     Integer getDirectSubcomponentsSize() throws RemoteException;
     Integer getTotalSubcomponentsSize() throws RemoteException;
     String listSubcomponents() throws RemoteException;
+    String toText() throws RemoteException;
 }

@@ -59,4 +59,11 @@ public class PartObject implements Part {
     public String toString() {
         return code + " - " + name;
     }
+
+    @Override
+    public String toText() throws RemoteException {
+        return this.toString();
+    }
+    
+    
 }
