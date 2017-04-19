@@ -1,0 +1,4 @@
+grant  codeBase "file:/c:/projetos/invocacao-do-mal/invocacao-do-mal/build"
+{  
+    permission java.security.AllPermission;  
+};

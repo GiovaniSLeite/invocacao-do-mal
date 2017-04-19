@@ -1,18 +1,27 @@
 
 import java.rmi.RemoteException;
-import java.util.List;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.UUID;
 
-public class Client implements ClientInterface {
+public class Client {
     PartRepository currentRepo;
     Part currentPart;
-    List<SubComponentItem> currentSubcomponents;
+    SubcomponentsList currentSubcomponents = new SubcomponentsList();
     
-    @Override
-    public void connectTo(String serverName) {
-        throw new UnsupportedOperationException("Not supported yet.");
+     public static void main(String[] args) {
+        //TODO - Menu
     }
 
-    @Override
+    public void connectTo(String serverName) {
+        try {
+            Registry registry = LocateRegistry.getRegistry(1200);
+            currentRepo = (PartRepository) registry.lookup(serverName);
+        } catch (Exception ex) {
+            System.out.println("Erro ao conectar ao servidor - " + ex.getMessage());
+        }
+    }
+
     public String getCurrentRepoName() {
         try {
             return currentRepo.getName();
@@ -22,28 +31,16 @@ public class Client implements ClientInterface {
         }
     }
 
-    @Override
-    public Integer getCurrentReposize() {
+    public Integer getCurrentRepoSize() {
         try {
-            return currentRepo.allParts().size();
+            return currentRepo.getRepositorySize();
         } catch (RemoteException ex) {
             System.out.println("Erro ao contar as parts do repositorio - " + ex.getMessage());
             return null;
         }
     }
 
-    @Override
-    public String listCurrentRepoParts() {
-        try {
-            return currentRepo.allParts().toString();
-        } catch (RemoteException ex) {
-            System.out.println("Erro ao listar as parts do repositorio - " + ex.getMessage());
-            return null;
-        }
-    }
-
-    @Override
-    public void getPart(Integer code) {
+    public void getPart(UUID code) {
         try {
             currentPart = currentRepo.getPart(code);
         } catch (RemoteException ex) {
@@ -51,47 +48,64 @@ public class Client implements ClientInterface {
         }
     }
 
-    @Override
     public void addPartToRepository(String name, String description) {
         try {
-            currentRepo.insertPart(new Part(name, description, currentSubcomponents));
+            currentRepo.insertPart(name, description, currentSubcomponents);
         } catch (RemoteException ex) {
             System.out.println("Erro ao adicionar Part ao repositorio - " + ex.getMessage());
         }
     }
 
-    @Override
     public String getCurrentPartName() {
-        return currentPart.getName();
+        try {
+            return currentPart.getName();
+        } catch (RemoteException ex) {
+            return "Erro ao buscar o nome";
+        }
     }
 
-    @Override
     public String getCurrentPartDescription() {
-        return currentPart.getDescription();
+        try {
+            return currentPart.getDescription();
+        } catch (RemoteException ex) {
+            return "Erro ao buscar o nome";
+        }
     }
 
-    @Override
     public Integer countCurrentPartDirectComponents() {
-        return currentPart.getSubComponents().size();
+        try {
+            return currentPart.getDirectSubcomponentsSize();
+        } catch (RemoteException ex) {
+            return -1;
+        }
     }
 
-    @Override
     public String listCurrentPartSubComponents() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            return currentPart.listSubcomponents();
+        } catch (RemoteException ex) {
+            return "Erro ao listar subcomponents";
+        }
     }
 
-    @Override
     public void addPartToCurrentSubComponents(Integer quantity) {
-        currentSubcomponents.add(new SubComponentItem(currentPart, quantity));
+        currentSubcomponents.add(new SubcomponentsListItem(currentPart, quantity));
     }
 
-    @Override
     public void clearCurrentSubComponents() {
         currentSubcomponents.clear();
     }
 
-    @Override
     public void quit() {
         System.exit(0);
+    }
+
+    public String listCurrentRepoParts() {
+        try {
+            return currentRepo.listRepositoryParts();
+        } catch (RemoteException ex) {
+            System.out.println("Erro ao listar peças do repositório corrente");
+            return null;
+        }
     }
 }

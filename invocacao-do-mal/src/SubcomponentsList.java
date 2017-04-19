@@ -1,0 +1,35 @@
+
+
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+public class SubcomponentsList {
+    Collection<SubcomponentsListItem> list;
+
+    public SubcomponentsList() {
+        list = new ArrayList();
+    }
+    @Override
+    public String toString() {
+        StringBuilder listing = new StringBuilder();
+        
+        for(SubcomponentsListItem obj : list)
+            listing.append(obj).append("\n");
+        
+        return listing.toString();
+    }
+    
+    public void add(SubcomponentsListItem p){
+        list.add(p);
+    }
+    
+    public boolean isEmpty() {
+        return list.isEmpty();
+    }
+    
+    public void clear() {
+        list.clear();
+    }
+    
+}
