@@ -1,12 +1,6 @@
 package utils;
-
-
-
-
-import utils.SubcomponentsList;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.UUID;
 
 public interface PartRepository extends Remote {
     
