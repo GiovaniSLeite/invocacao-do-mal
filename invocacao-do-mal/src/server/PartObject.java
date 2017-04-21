@@ -13,7 +13,8 @@ public class PartObject implements Part {
         this.name = name;
         this.description = description;
         this.origin = origin;
-        this.subcomponents = subs;
+        this.subcomponents = new SubcomponentsList();
+        this.subcomponents.addAll(subs);
     }
     
     @Override
@@ -24,11 +25,6 @@ public class PartObject implements Part {
     @Override
     public String getDescription() throws RemoteException {
         return description;
-    }
-
-    @Override
-    public String getRepositoryName() throws RemoteException {
-        return origin;
     }
 
     @Override
@@ -64,5 +60,10 @@ public class PartObject implements Part {
     @Override
     public String toText() throws RemoteException {
         return this.toString();
+    }
+
+    @Override
+    public String getOrigin() throws RemoteException {
+        return this.origin;
     }
 }

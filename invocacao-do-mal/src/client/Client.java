@@ -9,6 +9,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Client {
     PartRepository currentRepo;
@@ -25,7 +27,7 @@ public class Client {
         this.connectTo(sc.next());
         System.out.println(this.currentRepo.getRepositorySize());
         this.addPartToRepository("Amanda", "besta");
-        System.out.println(this.currentRepo.getRepositorySize());
+        this.getCurrentRepoSize();
         this.listCurrentRepoParts();
         this.getCurrentRepoName();
         this.getCurrentRepoSize();
@@ -134,6 +136,23 @@ public class Client {
             System.out.println(currentRepo.listRepositoryParts());
         } catch (RemoteException ex) {
             System.out.println("Erro ao listar peças do repositório corrente - " + ex.getMessage());
+        }
+    }
+
+    public void getCurrentPartOrigin() {
+        try {
+            System.out.println("A peça corrente pertence ao repositório: " + currentPart.getOrigin());
+        } catch (RemoteException ex) {
+            System.out.println("Erro ao buscar a origem da peça corrente - " + ex.getMessage());
+        }
+    }
+
+    public void currentPartIsPrimitive() {
+        try {
+            String verbo = currentPart.isPrimitive() ? "é" : "não é";
+            System.out.println("A peça corrente " + verbo + " primitiva.");
+        } catch (RemoteException ex) {
+            System.out.println("Erro ao verificar se a peça corrente é primitiva - " + ex.getMessage());
         }
     }
 }

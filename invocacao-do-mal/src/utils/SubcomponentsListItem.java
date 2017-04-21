@@ -1,8 +1,7 @@
 package utils;
+import java.io.Serializable;
 
-
-
-public class SubcomponentsListItem {
+public class SubcomponentsListItem implements Serializable {
     private Part part;
     private Integer quantity;
 
