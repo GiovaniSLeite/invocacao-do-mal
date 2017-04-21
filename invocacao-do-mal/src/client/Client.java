@@ -1,54 +1,132 @@
-package client;
+﻿package client;
 
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.Scanner;
 
 import utils.Part;
 import utils.PartRepository;
 import utils.SubcomponentsList;
 import utils.SubcomponentsListItem;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.util.Scanner;
 
 public class Client {
     PartRepository currentRepo;
     Part currentPart;
     SubcomponentsList currentSubcomponents;
     
-    public static void main(String[] args) throws RemoteException {
-        Client x = new Client();
-    }
+	public static void main(String[] args) throws RemoteException {
+		Client client = new Client();
+		Scanner sc = new Scanner(System.in);
+		/*
+		 * - estabeleça uma conexão com um (processo) servidor;
+		 */
+		int mainMenuChoice = 0;
+		while (mainMenuChoice != 2) {
+			System.out.println("Menu \n" + " 1 - Conectar a um servidor: \n" + " 2 - Sair");
+			try {
+				mainMenuChoice = Integer.parseInt(sc.next());
+			} catch (NumberFormatException ex) {
+				System.out.println("Entrada inválida");
+				mainMenuChoice = 0;
+			}
 
-    void teste() throws RemoteException {
-        System.out.println("escreve o nome do repositorio");
-        Scanner sc = new Scanner(System.in);
-        this.connectTo(sc.next());
-        System.out.println(this.currentRepo.getRepositorySize());
-        this.addPartToRepository("Amanda", "besta");
-        this.getCurrentRepoSize();
-        this.listCurrentRepoParts();
-        this.getCurrentRepoName();
-        this.getCurrentRepoSize();
-        System.out.println("escreve o cod");
-        this.getPart(sc.next());
-        System.out.println(currentPart.getDescription());
-    }
+			if (mainMenuChoice == 1) {
+				System.out.println("Digite o nome do servidor para se conectar: ");
+				String serverName = sc.next();
+				if (client.connectTo(serverName)) {
+					/*
+					 * --- se a conexão foi bem sucedida ---
+					 * 
+					 * - interaja com o repositório implementado pelo servidor:
+					 * – examinando o nome do repositório e o numero de peças
+					 * nele contidas, – listando as peças no repositório, –
+					 * buscando uma peça (por código de peça) no repositório, –
+					 * adicionando ao repositório novas peças (primitivas ou
+					 * agregadas);
+					 */
+
+					int repoMenuChoice = 0;
+					while (repoMenuChoice != 5) {
+						System.out.println();
+						System.out.println("Repositório: \n" + "1 - Informações\n" + "Peças: " + "\t2 - Adicionar\n"
+								+ "\t3 - Buscar por código\n" + "\t4 - Listar\n" + "5 - Voltar");
+
+						sc.nextLine();
+						repoMenuChoice = sc.nextInt();
+						client.repositoryInteraction(repoMenuChoice, sc);
+						/*
+						 * Depois de selecionar uma peça
+						 * 
+						 * – examinando o nome e a descrição da peça, 
+						 * – obtendo o (nome do) repositório que a contém, 
+						 * – verificando se a peça é primitiva ou agregada, 
+						 * – obtendo o número de subcomponentes diretos e primitivos da peça, 
+						 * – listando suas subpeças.
+						 */
+
+						if ((repoMenuChoice == 3)&&(client.currentPart != null)) {
+							
+							int partMenuChoice = 0;
+							while(partMenuChoice!=7){
+								System.out.println("Peça: \n" 
+										+ "1 - Informações \n" 
+										+ "2 - Repositório \n"
+										+ "3 - Primitiva\n" 
+										+ "Subcomponentes\n" 
+										+ "\t4 - Numero\n" 
+										+ "\t5 - Listar\n"
+										+ "6 - Adicionar à lista de subpeças\n"
+										+ "7 - Voltar");
+								partMenuChoice = sc.nextInt();
+								client.partInteraction(partMenuChoice, sc);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		sc.close();
+	}
 
     public Client() {
         currentSubcomponents = new SubcomponentsList();
     }
 
-    public void connectTo(String serverName) {
-        try {
-            Registry registry = LocateRegistry.getRegistry(1099);
-            currentRepo = (PartRepository) registry.lookup(serverName);            
-            System.out.println("Conectado com sucesso ao repositorio " + serverName + ".");
-        } catch (Exception ex) {
-            System.out.println("Erro ao conectar ao servidor - " + ex.getMessage());
-        }
-    }
+	public Boolean connectTo(String serverName) {
+		try {
+			Registry registry = LocateRegistry.getRegistry(1099);
+			currentRepo = (PartRepository) registry.lookup(serverName);
+			System.out.println("Conectado com sucesso ao repositorio " + serverName + ".");
+			return true;
+		} catch (Exception ex) {
+			System.out.println("Erro ao conectar ao servidor - " + ex.getMessage());
+			return false;
+		}
+	}
 
     /* INTERACAO COM O SERVIDOR */
+	void repositoryInteraction(int action, Scanner sc) {
+		switch (action) {
+		case 1:
+			getCurrentRepoName();
+			getCurrentRepoSize();
+			break;
+		case 2:
+			this.addPart(sc);
+			break;
+		case 3:
+			getPartByCode(sc);
+			break;
+		case 4:
+			listCurrentRepoParts();
+			break;
+		default:
+			return;
+		}
+	}
+
     public void getCurrentRepoName() {
         try {
             System.out.println("Nome do repositorio: " + currentRepo.getName()+ ".");
@@ -72,7 +150,20 @@ public class Client {
             System.out.println("Erro ao listar peças do repositório corrente - " + ex.getMessage());
         }
     }
-
+	
+    public void addPart(Scanner sc) {
+		System.out.println("Digite as informações da peça: \n Nome:");
+		String nome = sc.next();
+		System.out.println("Descrição: ");
+		String desc = sc.next();
+		addPartToRepository(nome, desc);
+	}
+    
+	public void getPartByCode(Scanner sc) {
+		System.out.println("Digite o código da peça que deseja selecionar: ");
+		getPart(sc.next());
+	}
+	
     public void getPart(String code) {
         try {
             currentPart = currentRepo.getPart(code);
@@ -92,6 +183,33 @@ public class Client {
     }
 
     /* INTERACAO COM a PECA */
+
+	void partInteraction(int action, Scanner sc) {
+		switch (action) {
+		case 1:
+			getCurrentPartName();
+			getCurrentPartDescription();
+			break;
+		case 2:
+			getCurrentPartOrigin();
+			break;
+		case 3:
+			currentPartIsPrimitive();
+			break;
+		case 4:
+			countCurrentPartDirectComponents();
+		case 5:
+			listCurrentPartSubComponents();
+		case 6:
+			System.out.println("Quantidade: ");
+			addPartToCurrentSubComponents(sc.nextInt());
+		default:
+			break;
+		}
+
+	}
+
+    
     public void getCurrentPartName() {
         try {
             System.out.println("Nome da peça corrente: " + currentPart.getName() + ".");
@@ -156,4 +274,5 @@ public class Client {
         System.out.println("Tchau!");
         System.exit(0);
     }
+
 }

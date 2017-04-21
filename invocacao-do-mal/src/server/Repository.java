@@ -1,18 +1,26 @@
 package server;
-import utils.*;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
+import java.util.Scanner;
+
+import utils.Part;
+import utils.PartRepository;
+import utils.SubcomponentsList;
+
 
 public class Repository implements PartRepository {
     private String name;
     private HashMap<String, Part> partCollection;
 
     public static void main(String[] args) {
-        String name = args.length > 0 ? args[0] : "remote";
+    	Scanner sc = new Scanner(System.in);
+        System.out.println("Digite um nome para criar um novo repositório:");
+    	String name = sc.next();
+        sc.close();
         try {
             PartRepository obj = new Repository();
             Registry registry;
