@@ -9,8 +9,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Client {
     PartRepository currentRepo;
@@ -50,6 +48,7 @@ public class Client {
         }
     }
 
+    /* INTERACAO COM O SERVIDOR */
     public void getCurrentRepoName() {
         try {
             System.out.println("Nome do repositorio: " + currentRepo.getName()+ ".");
@@ -63,6 +62,14 @@ public class Client {
             System.out.println("O repositorio " + currentRepo.getName() + " tem: " + currentRepo.getRepositorySize() + "peças.");
         } catch (RemoteException ex) {
             System.out.println("Erro ao contar as parts do repositorio - " + ex.getMessage());
+        }
+    }
+
+    public void listCurrentRepoParts() {
+        try {
+            System.out.println(currentRepo.listRepositoryParts());
+        } catch (RemoteException ex) {
+            System.out.println("Erro ao listar peças do repositório corrente - " + ex.getMessage());
         }
     }
 
@@ -84,6 +91,7 @@ public class Client {
         }
     }
 
+    /* INTERACAO COM a PECA */
     public void getCurrentPartName() {
         try {
             System.out.println("Nome da peça corrente: " + currentPart.getName() + ".");
@@ -116,29 +124,6 @@ public class Client {
         }
     }
 
-    public void addPartToCurrentSubComponents(Integer quantity) {
-        currentSubcomponents.add(new SubcomponentsListItem(currentPart, quantity));
-        System.out.println("A parte corrente foi adicionada a lista de subcomponentes corrente com sucesso.");
-    }
-
-    public void clearCurrentSubComponents() {
-        currentSubcomponents.clear();
-        System.out.println("A lista de subcomponentes corrente foi esvaziada com sucesso.");
-    }
-
-    public void quit() {
-        System.out.println("Tchau!");
-        System.exit(0);
-    }
-
-    public void listCurrentRepoParts() {
-        try {
-            System.out.println(currentRepo.listRepositoryParts());
-        } catch (RemoteException ex) {
-            System.out.println("Erro ao listar peças do repositório corrente - " + ex.getMessage());
-        }
-    }
-
     public void getCurrentPartOrigin() {
         try {
             System.out.println("A peça corrente pertence ao repositório: " + currentPart.getOrigin());
@@ -154,5 +139,21 @@ public class Client {
         } catch (RemoteException ex) {
             System.out.println("Erro ao verificar se a peça corrente é primitiva - " + ex.getMessage());
         }
+    }
+
+    /* INTERACAO COM A LISTA DE SUBCOMPONENTES */
+    public void addPartToCurrentSubComponents(Integer quantity) {
+        currentSubcomponents.add(new SubcomponentsListItem(currentPart, quantity));
+        System.out.println("A parte corrente foi adicionada a lista de subcomponentes corrente com sucesso.");
+    }
+
+    public void clearCurrentSubComponents() {
+        currentSubcomponents.clear();
+        System.out.println("A lista de subcomponentes corrente foi esvaziada com sucesso.");
+    }
+
+    public void quit() {
+        System.out.println("Tchau!");
+        System.exit(0);
     }
 }
