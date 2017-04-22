@@ -18,7 +18,7 @@ public class Repository implements PartRepository {
 
     public static void main(String[] args) {
     	Scanner sc = new Scanner(System.in);
-        System.out.println("Digite um nome para criar um novo repositório:");
+        System.out.println("Digite um nome para criar um novo repositorio:");
     	String name = sc.next();
         sc.close();
         try {

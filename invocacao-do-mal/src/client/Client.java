@@ -1,4 +1,4 @@
-﻿package client;
+package client;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -137,7 +137,9 @@ public class Client {
 
     public void getCurrentRepoSize() {
         try {
-            System.out.println("O repositorio " + currentRepo.getName() + " tem: " + currentRepo.getRepositorySize() + "peças.");
+            int size = currentRepo.getRepositorySize();
+            String p = size == 1 ? " peça." : " peças.";
+            System.out.println("O repositorio " + currentRepo.getName() + " tem: " + size + p);
         } catch (RemoteException ex) {
             System.out.println("Erro ao contar as parts do repositorio - " + ex.getMessage());
         }
@@ -166,8 +168,12 @@ public class Client {
 	
     public void getPart(String code) {
         try {
+            currentPart = null;
             currentPart = currentRepo.getPart(code);
-            System.out.println("A peça buscada agora é a peça corrente.");
+            if(currentPart != null)
+                System.out.println("A peça buscada agora é a peça corrente.");
+            else
+                System.out.println("A peça procurada não foi encontada");
         } catch (RemoteException ex) {
             System.out.println("Erro ao buscar part no repositorio - " + ex.getMessage());
         }

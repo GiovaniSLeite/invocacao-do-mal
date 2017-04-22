@@ -1,5 +1,6 @@
 package utils;
 import java.io.Serializable;
+import java.rmi.RemoteException;
 
 public class SubcomponentsListItem implements Serializable {
     private Part part;
@@ -18,7 +19,12 @@ public class SubcomponentsListItem implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return quantity + "x " + part;
+    public String toString(){
+        try {
+            return quantity + "x " + part.toText();
+        } catch (RemoteException ex) {
+            System.out.println("Erro ao imprimir peça");
+            return null;
+        }
     }
 }
