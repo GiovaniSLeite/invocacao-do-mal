@@ -22,6 +22,10 @@ public class SubcomponentsList implements Serializable{
         list.add(p);
     }
 
+    public int getSize(){
+        return list.size();
+    }    
+    
     public boolean isEmpty() {
         return list.isEmpty();
     }

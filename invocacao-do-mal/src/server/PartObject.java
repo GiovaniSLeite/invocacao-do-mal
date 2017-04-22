@@ -34,7 +34,7 @@ public class PartObject implements Part {
 
     @Override
     public Integer getDirectSubcomponentsSize() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return subcomponents.getSize();
     }
 
     @Override
