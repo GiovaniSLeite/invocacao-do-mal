@@ -22,8 +22,10 @@ public class Client {
 		 * - estabeleça uma conexão com um (processo) servidor;
 		 */
 		int mainMenuChoice = 0;
-		while (mainMenuChoice != 2) {
-			System.out.println("Menu \n" + " 1 - Conectar a um servidor: \n" + " 2 - Sair");
+		while (mainMenuChoice != 3) {
+			System.out.println("Menu \n" + " 1 - Conectar a um servidor: \n"
+		+ " 2 - Listar servidores disponíveis\n"
+		+ " 3 - Sair");
 			try {
 				mainMenuChoice = Integer.parseInt(sc.next());
 			} catch (NumberFormatException ex) {
@@ -47,12 +49,17 @@ public class Client {
 					 */
 
 					int repoMenuChoice = 0;
-					while (repoMenuChoice != 5) {
+					while (repoMenuChoice != 6) {
 						System.out.println();
-						System.out.println("Repositório: \n" + "1 - Informações\n" + "Peças: " + "\t2 - Adicionar\n"
-								+ "\t3 - Buscar por código\n" + "\t4 - Listar\n" + "5 - Voltar");
-
-						sc.nextLine();
+						System.out.println("Repositório: \n"
+								+ "1 - Informações\n" 
+								+ "Peças: " 
+								+ "\t2 - Adicionar\n"
+								+ "\t3 - Buscar por código\n" 
+								+ "\t4 - Listar\n" 
+								+ "5 - Adicionar à lista de subpeças\n"
+								+ "6 - Voltar");
+						
 						repoMenuChoice = sc.nextInt();
 						client.repositoryInteraction(repoMenuChoice, sc);
 						/*
@@ -68,7 +75,7 @@ public class Client {
 						if ((repoMenuChoice == 3)&&(client.currentPart != null)) {
 							
 							int partMenuChoice = 0;
-							while(partMenuChoice!=7){
+							while(partMenuChoice!=6){
 								System.out.println("Peça: \n" 
 										+ "1 - Informações \n" 
 										+ "2 - Repositório \n"
@@ -76,14 +83,18 @@ public class Client {
 										+ "Subcomponentes\n" 
 										+ "\t4 - Numero\n" 
 										+ "\t5 - Listar\n"
-										+ "6 - Adicionar à lista de subpeças\n"
-										+ "7 - Voltar");
+										+ "6 - Voltar");
 								partMenuChoice = sc.nextInt();
 								client.partInteraction(partMenuChoice, sc);
 							}
 						}
 					}
 				}
+			}else if(mainMenuChoice == 2){
+				for(String repository : PartRepository.listCurrentRepos()){
+					System.out.println(repository);
+				}
+					
 			}
 		}
 
@@ -122,6 +133,9 @@ public class Client {
 		case 4:
 			listCurrentRepoParts();
 			break;
+		case 5:
+			System.out.println("Quantidade: ");
+			addPartToCurrentSubComponents(sc.nextInt());
 		default:
 			return;
 		}
@@ -154,10 +168,11 @@ public class Client {
     }
 	
     public void addPart(Scanner sc) {
-		System.out.println("Digite as informações da peça: \n Nome:");
-		String nome = sc.next();
+		sc.nextLine();
+    	System.out.println("Digite as informações da peça: \n Nome:");
+		String nome = sc.nextLine();
 		System.out.println("Descrição: ");
-		String desc = sc.next();
+		String desc = sc.nextLine();
 		addPartToRepository(nome, desc);
 	}
     
@@ -206,9 +221,6 @@ public class Client {
 			countCurrentPartDirectComponents();
 		case 5:
 			listCurrentPartSubComponents();
-		case 6:
-			System.out.println("Quantidade: ");
-			addPartToCurrentSubComponents(sc.nextInt());
 		default:
 			break;
 		}
@@ -280,5 +292,7 @@ public class Client {
         System.out.println("Tchau!");
         System.exit(0);
     }
+    
+    
 
 }
