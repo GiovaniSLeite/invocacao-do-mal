@@ -188,7 +188,7 @@ public class Client {
             if(currentPart != null)
                 System.out.println("A peça buscada agora é a peça corrente.");
             else
-                System.out.println("A peça procurada não foi encontada");
+                System.out.println("A peça procurada não foi encontrada");
         } catch (RemoteException ex) {
             System.out.println("Erro ao buscar part no repositorio - " + ex.getMessage());
         }

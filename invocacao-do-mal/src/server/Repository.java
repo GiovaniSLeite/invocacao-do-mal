@@ -83,13 +83,14 @@ public class Repository implements PartRepository {
     @Override
     public String listRepositoryParts() throws RemoteException {
         StringBuilder list = new StringBuilder();
-        list.append("Peças do repositorio: ").append(this.getName()).append("\n");
-        
-        for(Part p : partCollection.values())
-            list.append(p.toText()).append("\n");
-        
-        list.append("--- fim da lista ---");
-        
+        if(!partCollection.isEmpty()) {
+            list.append("Peças do repositorio: ").append(this.getName()).append("\n");
+            for(Part p : partCollection.values())
+                list.append(p.toText()).append("\n");
+            list.append("--- fim da lista ---"); 
+        } else {
+            list.append("Não há peças nesse repositorio");
+        }
         return list.toString();
     }    
 }

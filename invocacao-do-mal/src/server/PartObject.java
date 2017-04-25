@@ -38,11 +38,6 @@ public class PartObject implements Part {
     }
 
     @Override
-    public Integer getTotalSubcomponentsSize() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public String listSubcomponents() throws RemoteException {
         return subcomponents.toString();
     }

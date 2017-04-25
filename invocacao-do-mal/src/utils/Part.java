@@ -11,7 +11,6 @@ public interface Part extends Remote {
     String getOrigin() throws RemoteException;
     boolean isPrimitive() throws RemoteException;
     Integer getDirectSubcomponentsSize() throws RemoteException;
-    Integer getTotalSubcomponentsSize() throws RemoteException;
     String listSubcomponents() throws RemoteException;
     String toText() throws RemoteException;
 }
